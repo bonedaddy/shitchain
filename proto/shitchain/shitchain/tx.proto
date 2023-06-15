@@ -1,0 +1,7 @@
+syntax = "proto3";
+package shitchain.shitchain;
+
+option go_package = "github.com/bonedaddy/shitchain/x/shitchain/types";
+
+// Msg defines the Msg service.
+service Msg {}
