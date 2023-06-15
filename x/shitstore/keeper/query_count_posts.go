@@ -16,8 +16,8 @@ func (k Keeper) CountPosts(goCtx context.Context, req *types.QueryCountPostsRequ
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	ctx := sdk.UnwrapSDKContext(goCtx)
 	count := 0
+	ctx := sdk.UnwrapSDKContext(goCtx)
 	store := ctx.KVStore(k.storeKey)
 	postStore := prefix.NewStore(store, types.KeyPrefix(types.PostKey))
 	pageRes, err := query.Paginate(postStore, req.Pagination, func(key []byte, value []byte) error {

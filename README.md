@@ -13,7 +13,7 @@ waow much cosmos very learning such development
 * To send a transaction for the `CreatePost` message, run `shitchaind tx shitstore create-post "this is a test post" "this is a test body" 100stake "foo,bar,baz" --from alice`
 * To send a transaction for the `BroadcastPost` message run `shitchaind tx shitstore broadcast-post '{"title": "foo", "body": "bar", "amount": {}, "tags": []}'  --from alice `
 * To list all known posts run `shitchaind query shitstore list-post`
-
+* To run our custom query `shitchaind query shitstore count-posts cosmos10k9kaamtqf03law4cm9rntwq9v6hk8uzkh7s8l`
 # Resources
 
 * https://docs.ignite.com/guide
