@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package shitchain.shitstore;
+
+import "gogoproto/gogo.proto";
+import "shitchain/shitstore/params.proto";
+
+option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
+
+// GenesisState defines the shitstore module's genesis state.
+message GenesisState {
+  Params params  = 1 [(gogoproto.nullable) = false];
+  string port_id = 2;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package shitchain.shitstore;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}

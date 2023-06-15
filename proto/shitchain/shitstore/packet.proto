@@ -1,0 +1,13 @@
+syntax = "proto3";
+package shitchain.shitstore;
+
+option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
+
+message ShitstorePacketData {
+    oneof packet {
+        NoData noData = 1;
+    }
+}
+
+message NoData {
+}

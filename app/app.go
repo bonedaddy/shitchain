@@ -113,6 +113,9 @@ import (
 	shitchainmodule "github.com/bonedaddy/shitchain/x/shitchain"
 	shitchainmodulekeeper "github.com/bonedaddy/shitchain/x/shitchain/keeper"
 	shitchainmoduletypes "github.com/bonedaddy/shitchain/x/shitchain/types"
+	shitstoremodule "github.com/bonedaddy/shitchain/x/shitstore"
+	shitstoremodulekeeper "github.com/bonedaddy/shitchain/x/shitstore/keeper"
+	shitstoremoduletypes "github.com/bonedaddy/shitchain/x/shitstore/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "github.com/bonedaddy/shitchain/app/params"
@@ -174,6 +177,7 @@ var (
 		vesting.AppModuleBasic{},
 		consensus.AppModuleBasic{},
 		shitchainmodule.AppModuleBasic{},
+		shitstoremodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -249,7 +253,9 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	ShitchainKeeper shitchainmodulekeeper.Keeper
+	ShitchainKeeper       shitchainmodulekeeper.Keeper
+	ScopedShitstoreKeeper capabilitykeeper.ScopedKeeper
+	ShitstoreKeeper       shitstoremodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -297,6 +303,7 @@ func New(
 		feegrant.StoreKey, evidencetypes.StoreKey, ibctransfertypes.StoreKey, icahosttypes.StoreKey,
 		capabilitytypes.StoreKey, group.StoreKey, icacontrollertypes.StoreKey, consensusparamtypes.StoreKey,
 		shitchainmoduletypes.StoreKey,
+		shitstoremoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -527,6 +534,20 @@ func New(
 	)
 	shitchainModule := shitchainmodule.NewAppModule(appCodec, app.ShitchainKeeper, app.AccountKeeper, app.BankKeeper)
 
+	scopedShitstoreKeeper := app.CapabilityKeeper.ScopeToModule(shitstoremoduletypes.ModuleName)
+	app.ScopedShitstoreKeeper = scopedShitstoreKeeper
+	app.ShitstoreKeeper = *shitstoremodulekeeper.NewKeeper(
+		appCodec,
+		keys[shitstoremoduletypes.StoreKey],
+		keys[shitstoremoduletypes.MemStoreKey],
+		app.GetSubspace(shitstoremoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedShitstoreKeeper,
+	)
+	shitstoreModule := shitstoremodule.NewAppModule(appCodec, app.ShitstoreKeeper, app.AccountKeeper, app.BankKeeper)
+
+	shitstoreIBCModule := shitstoremodule.NewIBCModule(app.ShitstoreKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -538,6 +559,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+	ibcRouter.AddRoute(shitstoremoduletypes.ModuleName, shitstoreIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -589,6 +611,7 @@ func New(
 		transferModule,
 		icaModule,
 		shitchainModule,
+		shitstoreModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 
 		crisis.NewAppModule(app.CrisisKeeper, skipGenesisInvariants, app.GetSubspace(crisistypes.ModuleName)), // always be last to make sure that it checks for all invariants and not only part of them
@@ -622,6 +645,7 @@ func New(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		shitchainmoduletypes.ModuleName,
+		shitstoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -648,6 +672,7 @@ func New(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		shitchainmoduletypes.ModuleName,
+		shitstoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -679,6 +704,7 @@ func New(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		shitchainmoduletypes.ModuleName,
+		shitstoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 	app.mm.SetOrderInitGenesis(genesisModuleOrder...)
@@ -904,6 +930,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(shitchainmoduletypes.ModuleName)
+	paramsKeeper.Subspace(shitstoremoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
