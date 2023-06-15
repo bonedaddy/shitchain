@@ -1,7 +1,46 @@
 syntax = "proto3";
+
 package shitchain.shitstore;
+
+import "shitchain/shitstore/post.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreatePost (MsgCreatePost) returns (MsgCreatePostResponse);
+  rpc UpdatePost (MsgUpdatePost) returns (MsgUpdatePostResponse);
+  rpc DeletePost (MsgDeletePost) returns (MsgDeletePostResponse);
+}
+message MsgCreatePost {
+           string                   creator = 1;
+           string                   title   = 2;
+           string                   body    = 3;
+           cosmos.base.v1beta1.Coin amount  = 4 [(gogoproto.nullable) = false];
+  repeated string                   tags    = 5;
+}
+
+message MsgCreatePostResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdatePost {
+           string                   creator = 1;
+           uint64                   id      = 2;
+           string                   title   = 3;
+           string                   body    = 4;
+           cosmos.base.v1beta1.Coin amount  = 5 [(gogoproto.nullable) = false];
+  repeated string                   tags    = 6;
+}
+
+message MsgUpdatePostResponse {}
+
+message MsgDeletePost {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgDeletePostResponse {}
+

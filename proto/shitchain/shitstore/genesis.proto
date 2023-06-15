@@ -4,12 +4,15 @@ package shitchain.shitstore;
 
 import "gogoproto/gogo.proto";
 import "shitchain/shitstore/params.proto";
+import "shitchain/shitstore/post.proto";
 
 option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
 
 // GenesisState defines the shitstore module's genesis state.
 message GenesisState {
-  Params params  = 1 [(gogoproto.nullable) = false];
-  string port_id = 2;
+           Params params    = 1 [(gogoproto.nullable) = false];
+           string port_id   = 2;
+  repeated Post   postList  = 3 [(gogoproto.nullable) = false];
+           uint64 postCount = 4;
 }
 

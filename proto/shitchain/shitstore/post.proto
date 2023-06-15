@@ -1,0 +1,15 @@
+syntax = "proto3";
+package shitchain.shitstore;
+
+option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message Post {
+  uint64 id = 1;
+  string title = 2; 
+  string body = 3; 
+  cosmos.base.v1beta1.Coin amount = 4 [(gogoproto.nullable) = false]; 
+  repeated string tags = 5; 
+  string creator = 6;
+}
