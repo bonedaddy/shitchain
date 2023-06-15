@@ -10,9 +10,10 @@ option go_package = "github.com/bonedaddy/shitchain/x/shitstore/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreatePost (MsgCreatePost) returns (MsgCreatePostResponse);
-  rpc UpdatePost (MsgUpdatePost) returns (MsgUpdatePostResponse);
-  rpc DeletePost (MsgDeletePost) returns (MsgDeletePostResponse);
+  rpc CreatePost    (MsgCreatePost   ) returns (MsgCreatePostResponse   );
+  rpc UpdatePost    (MsgUpdatePost   ) returns (MsgUpdatePostResponse   );
+  rpc DeletePost    (MsgDeletePost   ) returns (MsgDeletePostResponse   );
+  rpc BroadcastPost (MsgBroadcastPost) returns (MsgBroadcastPostResponse);
 }
 message MsgCreatePost {
            string                   creator = 1;
@@ -43,4 +44,14 @@ message MsgDeletePost {
 }
 
 message MsgDeletePostResponse {}
+
+message MsgBroadcastPost {
+  string creator = 1;
+  Post   post    = 2;
+}
+
+message MsgBroadcastPostResponse {
+  int32  id    = 1;
+  string title = 2;
+}
 

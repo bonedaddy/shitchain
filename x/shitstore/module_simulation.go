@@ -35,6 +35,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeletePost int = 100
 
+	opWeightMsgBroadcastPost = "op_weight_msg_broadcast_post"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgBroadcastPost int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -108,6 +112,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		shitstoresimulation.SimulateMsgDeletePost(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgBroadcastPost int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgBroadcastPost, &weightMsgBroadcastPost, nil,
+		func(_ *rand.Rand) {
+			weightMsgBroadcastPost = defaultWeightMsgBroadcastPost
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgBroadcastPost,
+		shitstoresimulation.SimulateMsgBroadcastPost(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -137,6 +152,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgDeletePost,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				shitstoresimulation.SimulateMsgDeletePost(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgBroadcastPost,
+			defaultWeightMsgBroadcastPost,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				shitstoresimulation.SimulateMsgBroadcastPost(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

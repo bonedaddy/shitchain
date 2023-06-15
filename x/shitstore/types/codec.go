@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreatePost{}, "shitstore/CreatePost", nil)
 	cdc.RegisterConcrete(&MsgUpdatePost{}, "shitstore/UpdatePost", nil)
 	cdc.RegisterConcrete(&MsgDeletePost{}, "shitstore/DeletePost", nil)
+	cdc.RegisterConcrete(&MsgBroadcastPost{}, "shitstore/BroadcastPost", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -19,6 +20,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreatePost{},
 		&MsgUpdatePost{},
 		&MsgDeletePost{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBroadcastPost{},
 	)
 	// this line is used by starport scaffolding # 3
 
