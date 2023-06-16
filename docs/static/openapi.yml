@@ -75590,6 +75590,8 @@ definitions:
       id:
         type: string
         format: uint64
+  shitchain.shitchain.MsgDeleteThreadResponse:
+    type: object
   shitchain.shitchain.MsgUpdateThreadResponse:
     type: object
   shitchain.shitchain.Params:

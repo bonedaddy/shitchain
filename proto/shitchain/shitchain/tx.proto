@@ -8,6 +8,7 @@ option go_package = "github.com/bonedaddy/shitchain/x/shitchain/types";
 service Msg {
   rpc CreateThread (MsgCreateThread) returns (MsgCreateThreadResponse);
   rpc UpdateThread (MsgUpdateThread) returns (MsgUpdateThreadResponse);
+  rpc DeleteThread (MsgDeleteThread) returns (MsgDeleteThreadResponse);
 }
 message MsgCreateThread {
   string creator = 1;
@@ -27,4 +28,11 @@ message MsgUpdateThread {
 }
 
 message MsgUpdateThreadResponse {}
+
+message MsgDeleteThread {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgDeleteThreadResponse {}
 
