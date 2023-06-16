@@ -1,0 +1,12 @@
+syntax = "proto3";
+package shitchain.shitchain;
+
+option go_package = "github.com/bonedaddy/shitchain/x/shitchain/types";
+
+message Thread {
+  
+  string title = 1; 
+  string body = 2; 
+  string creator = 3; 
+  uint64 id = 4; 
+}
