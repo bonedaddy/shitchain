@@ -1,7 +1,20 @@
 syntax = "proto3";
+
 package shitchain.shitchain;
 
 option go_package = "github.com/bonedaddy/shitchain/x/shitchain/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreateThread (MsgCreateThread) returns (MsgCreateThreadResponse);
+}
+message MsgCreateThread {
+  string creator = 1;
+  string title   = 2;
+  string body    = 3;
+}
+
+message MsgCreateThreadResponse {
+  uint64 id = 1;
+}
+
