@@ -24,6 +24,12 @@ service Query {
     option (google.api.http).get = "/bonedaddy/shitchain/shitchain/show_thread/{id}";
   
   }
+  
+  // Queries a list of ListThread items.
+  rpc ListThread (QueryListThreadRequest) returns (QueryListThreadResponse) {
+    option (google.api.http).get = "/bonedaddy/shitchain/shitchain/list_thread";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -41,5 +47,14 @@ message QueryShowThreadRequest {
 
 message QueryShowThreadResponse {
   Thread thread = 1;
+}
+
+message QueryListThreadRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryListThreadResponse {
+  Thread                                 thread     = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
