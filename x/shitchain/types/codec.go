@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateThread{}, "shitchain/CreateThread", nil)
+	cdc.RegisterConcrete(&MsgUpdateThread{}, "shitchain/UpdateThread", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateThread{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateThread{},
 	)
 	// this line is used by starport scaffolding # 3
 

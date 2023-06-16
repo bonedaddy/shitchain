@@ -7,6 +7,7 @@ option go_package = "github.com/bonedaddy/shitchain/x/shitchain/types";
 // Msg defines the Msg service.
 service Msg {
   rpc CreateThread (MsgCreateThread) returns (MsgCreateThreadResponse);
+  rpc UpdateThread (MsgUpdateThread) returns (MsgUpdateThreadResponse);
 }
 message MsgCreateThread {
   string creator = 1;
@@ -17,4 +18,13 @@ message MsgCreateThread {
 message MsgCreateThreadResponse {
   uint64 id = 1;
 }
+
+message MsgUpdateThread {
+  string creator = 1;
+  string title   = 2;
+  string body    = 3;
+  uint64 id      = 4;
+}
+
+message MsgUpdateThreadResponse {}
 

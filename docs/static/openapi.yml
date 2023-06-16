@@ -75590,6 +75590,8 @@ definitions:
       id:
         type: string
         format: uint64
+  shitchain.shitchain.MsgUpdateThreadResponse:
+    type: object
   shitchain.shitchain.Params:
     type: object
     description: Params defines the parameters for the module.
