@@ -46473,6 +46473,54 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /bonedaddy/shitchain/shitchain/show_thread/{id}:
+    get:
+      summary: Queries a list of ShowThread items.
+      operationId: ShitchainShitchainShowThread
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              thread:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  creator:
+                    type: string
+                  id:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /bonedaddy/shitchain/shitstore/count_posts/{creator}:
     get:
       summary: Queries a list of CountPosts items.
@@ -75604,6 +75652,33 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  shitchain.shitchain.QueryShowThreadResponse:
+    type: object
+    properties:
+      thread:
+        type: object
+        properties:
+          title:
+            type: string
+          body:
+            type: string
+          creator:
+            type: string
+          id:
+            type: string
+            format: uint64
+  shitchain.shitchain.Thread:
+    type: object
+    properties:
+      title:
+        type: string
+      body:
+        type: string
+      creator:
+        type: string
+      id:
+        type: string
+        format: uint64
   shitchain.shitstore.MsgBroadcastPostResponse:
     type: object
     properties:

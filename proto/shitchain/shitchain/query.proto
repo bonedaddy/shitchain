@@ -1,26 +1,45 @@
 syntax = "proto3";
+
 package shitchain.shitchain;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "shitchain/shitchain/params.proto";
+import "shitchain/shitchain/thread.proto";
 
 option go_package = "github.com/bonedaddy/shitchain/x/shitchain/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/bonedaddy/shitchain/shitchain/params";
+  
+  }
+  
+  // Queries a list of ShowThread items.
+  rpc ShowThread (QueryShowThreadRequest) returns (QueryShowThreadResponse) {
+    option (google.api.http).get = "/bonedaddy/shitchain/shitchain/show_thread/{id}";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryShowThreadRequest {
+  uint64 id = 1;
+}
+
+message QueryShowThreadResponse {
+  Thread thread = 1;
+}
+
